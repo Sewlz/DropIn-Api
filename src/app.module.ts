@@ -2,12 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EventModule } from './event/event.module';
+import { EventModule } from './modules/event/event.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { OrganizerModule } from './organizer/organizer.module';
-import { TheaterModule } from './theater/theater.module';
-import { BookingModule } from './booking/booking.module';
-import { UserModule } from './user/user.module';
+import { OrganizerModule } from './modules/organizer/organizer.module';
+import { BookingModule } from './modules/booking/booking.module';
+import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
@@ -16,7 +15,6 @@ import { AuthModule } from './modules/auth/auth.module';
     MongooseModule.forRoot(process.env.DATABASE_HOST),
     EventModule,
     OrganizerModule,
-    TheaterModule,
     BookingModule,
     UserModule,
     AuthModule,

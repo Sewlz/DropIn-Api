@@ -9,31 +9,20 @@ import {
   Delete,
   BadRequestException,
 } from '@nestjs/common';
-import { CreateEventDto } from './dto/create-event-dto';
-import { EventService } from './event.service';
-
+import { CreateEventDto } from '../dto/create-event-dto';
+import { EventService } from '../service/event.service';
+import { Query as ExpressQuery } from 'express-serve-static-core';
 @Controller('event')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
-  @Get(':id')
-  async getEventById(@Param('id') id: string) {
-    return this.eventService.findEventById(id);
-  }
-
   @Get()
-  async getEventByQuery(@Query('name') name: string) {
-    return this.eventService.findEventByName(name);
+  async getEventByQuery(@Query() query: ExpressQuery) {
+    return this.eventService.findEvent(query);
   }
 
   @Post()
   async createEvent(@Body() createEventDto: CreateEventDto) {
-    const existingEvent = await this.eventService.findEventByName(
-      createEventDto.name,
-    );
-    if (existingEvent) {
-      throw new BadRequestException('An event with this name already exists.');
-    }
     return this.eventService.createEvent(createEventDto);
   }
 

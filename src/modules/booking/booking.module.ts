@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { BookingService } from './booking.service';
-import { BookingController } from './booking.controller';
+import { BookingService } from './service/booking.service';
+import { BookingController } from './controller/booking.controller';
 
 @Module({
   providers: [BookingService],
