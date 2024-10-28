@@ -10,20 +10,18 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class PricingDto {
+class OrganizerDto {
   @IsString()
   @IsNotEmpty()
-  ticketType: string;
-
-  @IsNumber()
-  price: number;
+  name: string;
 
   @IsString()
   @IsNotEmpty()
-  currency: string;
+  organizerImg: number;
 
-  @IsNumber()
-  quantity: number;
+  @IsString()
+  @IsNotEmpty()
+  description: string;
 }
 
 class TheaterDto {
@@ -74,6 +72,6 @@ export class CreateEventDto {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => PricingDto)
-  pricing: PricingDto[];
+  @Type(() => OrganizerDto)
+  pricing: OrganizerDto[];
 }
