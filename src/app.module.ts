@@ -7,16 +7,21 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { BookingModule } from './modules/booking/booking.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CategoryModule } from './modules/category/category.module';
+import { PaymentModule } from './modules/payment/payment.module';
 import { TicketModule } from './modules/ticket/ticket.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.DATABASE_HOST),
     EventModule,
-    TicketModule,
     BookingModule,
     UserModule,
     AuthModule,
+    CategoryModule,
+    PaymentModule,
+    TicketModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,38 +1,15 @@
 import {
+  IsMongoId,
   IsString,
   IsDate,
-  IsArray,
-  ValidateNested,
-  IsNotEmpty,
-  IsNumber,
   IsUrl,
-  IsMongoId,
+  IsNotEmpty,
+  ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-
-class OrganizerDto {
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @IsString()
-  @IsNotEmpty()
-  organizerImg: number;
-
-  @IsString()
-  @IsNotEmpty()
-  description: string;
-}
-
-class TheaterDto {
-  @IsString()
-  @IsNotEmpty()
-  theaterName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  theaterAddress: string;
-}
+import { TheaterDto } from './theater.dto';
+import { TicketDto } from './ticket.dto';
+import { OrganizerDto } from './organizer.dto';
 
 export class CreateEventDto {
   @IsMongoId()
@@ -58,20 +35,19 @@ export class CreateEventDto {
   @IsNotEmpty()
   image: string;
 
-  @ValidateNested()
-  @Type(() => TheaterDto)
-  theater: TheaterDto;
-
   @IsString()
   @IsNotEmpty()
   categoryId: string;
 
-  @IsMongoId()
-  @IsNotEmpty()
-  organizerId: string;
+  @ValidateNested()
+  @Type(() => TheaterDto)
+  theater: TheaterDto;
 
-  @IsArray()
-  @ValidateNested({ each: true })
+  @ValidateNested()
+  @Type(() => TicketDto)
+  ticket: TicketDto;
+
+  @ValidateNested()
   @Type(() => OrganizerDto)
-  pricing: OrganizerDto[];
+  organizer: OrganizerDto;
 }

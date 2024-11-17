@@ -5,20 +5,22 @@ export type BookingDocument = Booking & Document;
 
 @Schema({ timestamps: true })
 export class Booking {
-  @Prop({ type: Types.ObjectId, ref: 'Event', required: true })
-  event: Types.ObjectId;
+  _id: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, ref: 'Ticket', required: true })
+  ticketId: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  user: Types.ObjectId;
-
-  @Prop({ type: [{ seatNumber: String, ticketType: String }] })
-  seats: { seatNumber: string; ticketType: string }[];
+  userId: Types.ObjectId;
 
   @Prop({ required: true })
   totalAmount: number;
 
-  @Prop({ default: 'pending' })
+  @Prop({ default: 'PENDING' })
   paymentStatus: string;
+
+  @Prop({ default: '' })
+  capturedId: string;
 }
 
 export const BookingSchema = SchemaFactory.createForClass(Booking);

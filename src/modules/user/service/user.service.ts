@@ -4,10 +4,15 @@ import { User } from '../schema/user.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from '../dto/create-user-dto';
 import * as bcrypt from 'bcrypt';
-
+import { BookingService } from 'src/modules/booking/service/booking.service';
+import { EventService } from 'src/modules/event/service/event.service';
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly bookingService: BookingService,
+    private readonly eventService: EventService,
+  ) {}
   async getAllUser(): Promise<User[]> {
     try {
       const users: User[] = await this.userModel.find().exec();
@@ -41,12 +46,17 @@ export class UserService {
   }
   async deleteUser(id: string) {
     if (!id) {
-      throw new Error('id is null or undefined');
+      throw new Error('User ID is required');
     }
     try {
-      return this.userModel.findByIdAndDelete(id).exec();
+      await Promise.all([
+        this.eventService.deleteEventByUserId(id),
+        this.bookingService.deleteBookingByUserId(id),
+      ]);
+
+      return await this.userModel.findByIdAndDelete(id).exec();
     } catch (error) {
-      throw new Error(`Failed to delete user: ${error}`);
+      throw new Error(`Failed to delete user: ${error.message || error}`);
     }
   }
 }

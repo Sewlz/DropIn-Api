@@ -1,9 +1,18 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { BookingService } from './service/booking.service';
 import { BookingController } from './controller/booking.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Booking, BookingSchema } from './schema/booking.schema';
+import { PaymentModule } from '../payment/payment.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
+  imports: [
+    MongooseModule.forFeature([{ name: Booking.name, schema: BookingSchema }]),
+    forwardRef(() => PaymentModule),
+  ],
   providers: [BookingService],
-  controllers: [BookingController]
+  controllers: [BookingController],
+  exports: [BookingService],
 })
 export class BookingModule {}

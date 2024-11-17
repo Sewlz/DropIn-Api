@@ -1,7 +1,29 @@
+import {
+  IsMongoId,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsDate,
+} from 'class-validator';
+
 export class CreateBookingDto {
-  event: string;
-  user: string;
-  seats: { seatNumber: string; ticketType: string }[];
+  @IsOptional()
+  @IsMongoId()
+  userId?: string;
+
+  @IsNotEmpty()
+  @IsMongoId()
+  ticketId: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  quantity: number;
+
+  @IsNotEmpty()
+  @IsNumber()
   totalAmount: number;
-  paymentStatus?: 'pending' | 'completed' | 'canceled';
+
+  @IsOptional()
+  @IsDate()
+  bookingDate?: Date;
 }
