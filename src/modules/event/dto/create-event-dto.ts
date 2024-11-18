@@ -8,7 +8,6 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { TheaterDto } from './theater.dto';
-import { TicketDto } from './ticket.dto';
 import { OrganizerDto } from './organizer.dto';
 
 export class CreateEventDto {
@@ -42,10 +41,6 @@ export class CreateEventDto {
   @ValidateNested()
   @Type(() => TheaterDto)
   theater: TheaterDto;
-
-  @ValidateNested()
-  @Type(() => TicketDto)
-  ticket: TicketDto;
 
   @ValidateNested()
   @Type(() => OrganizerDto)

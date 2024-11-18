@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Organizer, OrganizerSchema } from './organizer.schema';
 import { Theater, TheaterSchema } from './theater.schema';
-import { Ticket, TicketSchema } from './ticket.schema';
 
 @Schema({ timestamps: true })
 export class Event extends Document {
@@ -32,9 +31,6 @@ export class Event extends Document {
 
   @Prop({ type: OrganizerSchema, required: true })
   organizer: Organizer;
-
-  @Prop({ type: TicketSchema, required: true })
-  ticket: Ticket;
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

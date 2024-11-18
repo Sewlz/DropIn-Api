@@ -9,19 +9,15 @@ import {
 export class CreateBookingDto {
   @IsOptional()
   @IsMongoId()
-  userId?: string;
+  ticketId?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsMongoId()
-  ticketId: string;
+  userId?: string;
 
   @IsNotEmpty()
   @IsNumber()
   quantity: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  totalAmount: number;
 
   @IsOptional()
   @IsDate()

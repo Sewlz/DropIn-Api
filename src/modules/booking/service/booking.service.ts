@@ -10,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateBookingDto } from '../dto/create-booking-dto';
 import { UpdateBookingDto } from '../dto/update-booking-dto';
 import { PaymentService } from 'src/modules/payment/service/payment.service';
+import { Ticket } from 'src/modules/ticket/schema/ticket.schema';
 
 @Injectable()
 export class BookingService {
@@ -65,9 +66,13 @@ export class BookingService {
     try {
       const captureResult = await this.paymentService.captureOrder(token);
       const formattedBookingId = new Types.ObjectId(bookingId);
+      const price = parseFloat(
+        captureResult.purchase_units[0].payments.captures[0].amount.value,
+      );
 
       if (captureResult.status === 'COMPLETED') {
         await this.bookingModel.findByIdAndUpdate(formattedBookingId, {
+          totalPrice: price,
           paymentStatus: 'COMPLETED',
           capturedId: captureResult.id,
         });
@@ -83,7 +88,7 @@ export class BookingService {
     }
   }
 
-  async cancelPayment(booking: Booking) {
+  async cancelPayment(booking: Booking, ticket: Ticket) {
     if (booking.paymentStatus === 'CANCELLED') {
       throw new Error('Booking is already cancelled');
     }
@@ -92,7 +97,6 @@ export class BookingService {
       throw new Error('Invalid payment capture ID');
     }
 
-    // Check if the payment has already been refunded
     if (booking.paymentStatus === 'REFUNDED') {
       throw new Error('Payment has already been refunded');
     }
@@ -100,13 +104,13 @@ export class BookingService {
     try {
       const refund = await this.paymentService.refundPayment(
         booking.capturedId,
-        booking.totalAmount,
+        ticket.price * booking.quantity,
       );
 
       if (refund.status === 'COMPLETED') {
         await this.bookingModel.findByIdAndUpdate(booking._id, {
           paymentStatus: 'CANCELLED',
-          refundStatus: 'REFUNDED', // Add a refundStatus field to track the refund status
+          refundStatus: 'REFUNDED',
         });
         return { status: 'success', refund };
       } else {

@@ -14,7 +14,10 @@ export class Booking {
   userId: Types.ObjectId;
 
   @Prop({ required: true })
-  totalAmount: number;
+  quantity: number;
+
+  @Prop({ default: 0 })
+  totalPrice: number;
 
   @Prop({ default: 'PENDING' })
   paymentStatus: string;

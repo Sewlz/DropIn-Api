@@ -5,8 +5,7 @@ export type TicketDocument = Ticket & Document;
 
 @Schema()
 export class Ticket extends Document {
-  @Prop({ type: Types.ObjectId, required: true, ref: 'Events' })
-  eventId: Types.ObjectId;
+  _id: Types.ObjectId;
 
   @Prop({ required: true })
   ticketType: string;

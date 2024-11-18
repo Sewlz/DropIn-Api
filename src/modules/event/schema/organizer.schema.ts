@@ -6,7 +6,7 @@ export class Organizer {
   name: string;
 
   @Prop({ required: true })
-  organizerImg: number;
+  organizerImg: string;
 
   @Prop({ required: true })
   description: string;
