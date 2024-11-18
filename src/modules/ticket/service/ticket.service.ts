@@ -3,9 +3,22 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Ticket } from '../schema/ticket.schema';
 import { TicketDto } from '../dto/ticket.dto';
+import { updateTicketDto } from '../dto/update-ticket-dto';
 @Injectable()
 export class TicketService {
   constructor(@InjectModel(Ticket.name) private ticketModel: Model<Ticket>) {}
+  async getTicketByEventId(eventId: string): Promise<Ticket[]> {
+    try {
+      const formattedEventId = new Types.ObjectId(eventId);
+      const tickets: Ticket[] = await this.ticketModel
+        .find({ eventId: formattedEventId })
+        .exec();
+      return tickets;
+    } catch (error) {
+      throw new Error(`Failed to get Event: ${error.message}`);
+    }
+  }
+
   async getTicketById(id: string): Promise<Ticket> {
     try {
       return this.ticketModel.findById(id).exec();
@@ -35,7 +48,7 @@ export class TicketService {
   async updateTicket(
     userId: string,
     ticketId: string,
-    updateTicketDto: TicketDto,
+    updateTicketDto: updateTicketDto,
   ) {
     if (!userId || !ticketId) {
       throw new Error('Ticket id is null or undefined');

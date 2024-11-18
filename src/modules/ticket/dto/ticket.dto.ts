@@ -1,15 +1,25 @@
-import { IsString, IsMongoId, IsNotEmpty, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsMongoId,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 
 export class TicketDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   ticketType: string;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   price: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   quantity: number;
+
+  @IsOptional()
+  @IsMongoId()
+  eventId?: string;
 }

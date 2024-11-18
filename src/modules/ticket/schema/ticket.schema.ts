@@ -18,6 +18,9 @@ export class Ticket extends Document {
 
   @Prop({ required: true })
   quantity: number;
+
+  @Prop({ required: true })
+  eventId: Types.ObjectId;
 }
 
 export const TicketSchema = SchemaFactory.createForClass(Ticket);

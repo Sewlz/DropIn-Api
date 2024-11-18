@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Controller,
-  NotFoundException,
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { BookingService } from '../service/booking.service';
 import { AuthGuard } from 'src/modules/auth/guard/auth.guard';
 import {
@@ -22,7 +18,7 @@ import { Roles } from 'src/modules/auth/roles/decorator/role.decorator';
 import { Role } from 'src/modules/auth/roles/enum/role.enum';
 import { PaymentService } from 'src/modules/payment/service/payment.service';
 import { TicketService } from 'src/modules/ticket/service/ticket.service';
-import { Types } from 'mongoose';
+
 @Controller('booking')
 export class BookingController {
   constructor(
@@ -65,7 +61,7 @@ export class BookingController {
     createBookingDto.ticketId = ticket._id.toString();
     createBookingDto.userId = userId;
     createBookingDto.bookingDate = new Date();
-    
+
     const createdBooking =
       await this.bookingService.createUserBooking(createBookingDto);
 

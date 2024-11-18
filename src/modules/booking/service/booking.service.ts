@@ -3,7 +3,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import * as paypal from '@paypal/checkout-server-sdk';
 import { Model, Types } from 'mongoose';
 import { Booking } from '../schema/booking.schema';
 import { InjectModel } from '@nestjs/mongoose';
